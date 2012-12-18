@@ -101,5 +101,5 @@ Nothing here yet.
 6.0 Changelog
 -------------
 
-[2012-12-17] Initial Version
-[2012-12-18] Removed 404 handler
+* **[2012-12-17]** Initial Version
+* **[2012-12-18]** Removed 404 handler
