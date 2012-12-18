@@ -5,11 +5,6 @@ include './autoload.php';
 $router = new \HybridLogic\Router;
 
 
-$router->on_404(function(){
-	echo '404: Page Not Found';
-});
-
-
 $router->get('/', function(){
 	echo 'homepage';
 });
@@ -38,9 +33,8 @@ $router->get('regex/:[a-f][a-f][0-9]/:(foo|bar)?', function($hex, $opt){
 	echo "HEX $hex and Opt $opt";
 });
 
-$router->get(':all', function(){ // Overrides 404
-	echo "Catch all hit";
-	print_r(func_get_args());
+$router->get(':all', function($uri){
+	echo "Catch all: $uri";
 });
 
 

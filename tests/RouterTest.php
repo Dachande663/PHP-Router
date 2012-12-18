@@ -27,10 +27,6 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 
 		$this->router = new \HybridLogic\Router;
 
-		$this->router->on_404(function(){
-			return '404';
-		});
-
 		$this->router->get('/', function(){
 			return 'root';
 		});
@@ -71,6 +67,10 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 			return "regex-$one-$two";
 		});
 
+		$this->router->get('catch/:all/:num', function($uri){
+			return "catch-$uri";
+		});
+
 	} // end func: setUp
 
 
@@ -82,8 +82,8 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 	 * @author Luke Lanchester
 	 * @dataProvider providerRequests
 	 **/
-	public function testRouter($uri, $method, $result) {
-		$this->assertEquals($this->router->run($uri, $method), $result);
+	public function testRouter($uri, $method, $expected) {
+		$this->assertEquals($expected, $this->router->run($uri, $method));
 	} // end func: testRouter
 
 
@@ -99,26 +99,26 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 		return array(
 
 			array('/', 'GET', 'root'),
-			array('not-real', 'GET', '404'),
+			array('not-real', 'GET', false),
 			array('single', 'GET', 'single'),
 
 			array('dir/sub', 'GET', 'subdir'),
-			array('dir/sub2', 'GET', '404'),
+			array('dir/sub2', 'GET', false),
 
 			array('dir2', 'GET', 'dir2'),
 			array('dir2/optional', 'GET', 'dir2'),
-			array('dir2/not-real', 'GET', '404'),
-			array('dir2/optional/not-real', 'GET', '404'),
+			array('dir2/not-real', 'GET', false),
+			array('dir2/optional/not-real', 'GET', false),
 
-			array('num', 'GET', '404'),
+			array('num', 'GET', false),
 			array('num/123', 'GET', 'num-123'),
-			array('num/abc', 'GET', '404'),
-			array('num/123/test', 'GET', '404'),
+			array('num/abc', 'GET', false),
+			array('num/123/test', 'GET', false),
 
-			array('any', 'GET', '404'),
+			array('any', 'GET', false),
 			array('any/test', 'GET', 'any-test'),
 			array('any/example-slug-2', 'GET', 'any-example-slug-2'),
-			array('any/example/not-real', 'GET', '404'),
+			array('any/example/not-real', 'GET', false),
 
 			array('any2', 'GET', 'any2-'),
 			array('any2/hello-world', 'GET', 'any2-hello-world'),
@@ -127,12 +127,14 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 			array('multiple2/123/456/789', 'GET', 'multiple2-123-456-789'),
 			array('multiple2/123/456', 'GET', 'multiple2-123-456-'),
 			array('multiple2/123', 'GET', 'multiple2-123--'),
-			array('multiple2', 'GET', '404'),
+			array('multiple2', 'GET', false),
 
 			array('reg/ab3/that', 'GET', 'regex-ab3-that'),
-			array('reg/ab3/fail', 'GET', '404'),
+			array('reg/ab3/fail', 'GET', false),
 			array('reg/ab3', 'GET', 'regex-ab3-'),
-			array('reg/12c/that', 'GET', '404'),
+			array('reg/12c/that', 'GET', false),
+
+			array('catch/one/two/three', 'GET', 'catch-one/two/three'),
 
 		);
 

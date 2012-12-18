@@ -37,12 +37,6 @@ class Router {
 
 
 	/**
-	 * @var callable Callback to trigger on 404s
-	 **/
-	private $on_404_callback = null;
-
-
-	/**
 	 * Constructor
 	 *
 	 * @param array Options
@@ -151,19 +145,6 @@ class Router {
 
 
 	/**
-	 * Set 404 Callback handler
-	 *
-	 * @param callable 404 Callback
-	 * @return void
-	 * @author Luke Lanchester
-	 **/
-	public function on_404($callback) {
-		$this->on_404_callback = $callback;
-	} // end func: on_404
-
-
-
-	/**
 	 * Execute route that matches current request
 	 *
 	 * @param string Current request URI
@@ -176,7 +157,7 @@ class Router {
 		$uri = $this->get_request_uri($uri);
 
 		$routes = $this->routes[$method];
-		if(empty($routes)) throw new \RuntimeException('No routes provided');
+		if(empty($routes)) return false;
 
 		foreach($routes as $route) {
 
@@ -188,8 +169,7 @@ class Router {
 
 		}
 
-		if(!is_callable($this->on_404_callback)) throw new \RuntimeException('Uncallable callback provided for 404 route');
-		return call_user_func($this->on_404_callback);
+		return false;
 
 	} // end func: run
 
@@ -234,11 +214,6 @@ class Router {
 	private function expand_pattern($route) {
 
 		$input = $route['pattern'];
-		$input = strtr($input, array(
-			':num' => ':[0-9]+',
-			':any' => ':[a-z0-9-_]+',
-			':all' => ':.*',
-		));
 
 		$pattern = '';
 		$parts = explode('/', $input);
@@ -248,9 +223,16 @@ class Router {
 
 		foreach($parts as $part) {
 
+			$catch_all = (substr($part, 0, 4) === ':all');
+			$capture   = (substr($part, 0, 1) === ':');
+			$optional  = ($optional or substr($part, -1) === '?');
 			$capture_i = null;
-			$capture   = (substr($part, 0, 1) === ':') ? true : false;
-			$optional  = ($optional or substr($part, -1) === '?') ? true : false;
+
+			$part = strtr($part, array(
+				':num' => ':[0-9]+',
+				':any' => ':[a-z0-9-_]+',
+				':all' => ':.*',
+			));
 
 			if($capture) {
 				$capture_i = $bracket_count + 1;
@@ -268,6 +250,8 @@ class Router {
 
 			$pattern .= $part;
 			if($capture_i) $capture_ints[] = $capture_i;
+
+			if($catch_all) break;
 
 		}
 
