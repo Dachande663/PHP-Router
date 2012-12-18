@@ -10,12 +10,12 @@ support for optional parameters and regular expressions.
 0.0 Table of Contents
 ---------------------
 
-1.0 Introduction
-2.0 Examples
-3.0 Format
-4.0 Running Tests
-5.0 Troubleshooting
-6.0 Changelog
+* Introduction
+* Examples
+* Format
+* Running Tests
+* Troubleshooting
+* Changelog
 
 
 1.0 Introduction
@@ -37,13 +37,15 @@ in-place closures.
 2.0 Examples
 ------------
 
-    $router = new \HybridLogic\Router;
+```php
+$router = new \HybridLogic\Router;
 
-    $router->get('about', function(){
-    	echo 'About Us';
-    });
+$router->get('about', function(){
+	echo 'About Us';
+});
 
-    $router->run();
+$router->run();
+```
 
 
 3.0 Format
@@ -59,18 +61,18 @@ match /about, but not /about-us or /about/john-smith.
 
 There are three default regex expressions provided:
 
-  :num Matches any numeric value ([0-9]+)
-  :any Matches alphanumeric values, including - and _ ([a-z0-9-_]+)
-  :all Matches anything, including slashes, will override anything after it
+  * **:num** Matches any numeric value ([0-9]+)
+  * **:any** Matches alphanumeric values, including - and _ ([a-z0-9-_]+)
+  * **:all** Matches anything, including slashes, will override anything after it
 
 You can also provide your own regex, e.g.
 
-  /about/:[a-z][a-z0-9]+
+    /about/:[a-z][a-z0-9]+
 
 To make a section optional, simply put a question mark (?)
 at the end, e.g.
 
-  /about/:any?
+    /about/:any?
 
 
 Example patterns:
