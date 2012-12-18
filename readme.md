@@ -4,6 +4,8 @@ Router
 A drop dead simple URI routing library for PHP, with
 support for optional parameters and regular expressions.
 
+[![Build Status](https://travis-ci.org/Dachande663/Router.png)](https://travis-ci.org/Dachande663/Router)
+
 
 0.0 Table of Contents
 ---------------------
