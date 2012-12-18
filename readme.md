@@ -73,12 +73,13 @@ at the end, e.g.
 
 Example patterns:
 
-Pattern            | Matches          | Description
--------------------|------------------|--------------------------------
-/                  | /                | Homepage
-about              | /about           | Matches optional trailing slash
-about/:any?        | /about/john      | Match optional directories
-archive/:num/:num? | /archive/2012/06 | Match archive pattern
+Pattern            | Matches           | Description
+-------------------|-------------------|--------------------------------
+/                  | /                 | Homepage
+about              | /about            | Matches optional trailing slash
+about/:any?        | /about/john       | Match optional directories
+archive/:num/:num? | /archive/2012/06  | Match archive pattern
+:all               | /matches/anything | Catch-all handler (404s)
 
 
 4.0 Running Tests
@@ -97,3 +98,4 @@ Nothing here yet.
 -------------
 
 [2012-12-17] Initial Version
+[2012-12-18] Removed 404 handler
