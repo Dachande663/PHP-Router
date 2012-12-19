@@ -9,11 +9,7 @@ $router->get('/', function(){
 	echo 'homepage';
 });
 
-$router->get('about/us', function(){
-	echo 'About Us page';
-});
-
-$router->get('subpage/index?', function(){
+$router->get('subpage/us?', function(){
 	echo 'Optional uri segment';
 });
 
@@ -31,6 +27,14 @@ $router->get('blog/:num/:num/:any', function($year, $month, $slug){
 
 $router->get('regex/:[a-f][a-f][0-9]/:(foo|bar)?', function($hex, $opt){
 	echo "HEX $hex and Opt $opt";
+});
+
+$router->post('submit', function(){
+	echo 'On POST to /submit';
+});
+
+$router->any('contact', function(){
+	echo 'On GET or POST to /contact';
 });
 
 $router->get(':all', function($uri){

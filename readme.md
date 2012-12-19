@@ -55,6 +55,11 @@ Each route you wish to match should have a rule. The rule
 shouldn't include a beginning or ending slash, except for
 the homepage, which is just /.
 
+When defining a route, you can specify which HTTP methods
+it should respond to (GET, POST etc). For example, to only
+allow GET requests, use ->get(...). A utility method for
+quickly adding GET and POST is provided via ->any(...).
+
 A route pattern matches a request exactly, that means sub-
 directories are not included, for example "about" would
 match /about, but not /about-us or /about/john-smith.
@@ -103,3 +108,4 @@ Nothing here yet.
 
 * **[2012-12-17]** Initial Version
 * **[2012-12-18]** Removed 404 handler
+* **[2012-12-19]** Add any() and all() methods.

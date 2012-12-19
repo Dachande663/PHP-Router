@@ -71,6 +71,26 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 			return "catch-$uri";
 		});
 
+		$this->router->post('submit/:any', function($one){
+			return "post-$one";
+		});
+
+		$this->router->any('contact/:any', function($one){
+			return "contact-$one";
+		});
+
+		$this->router->put('add/:any', function($one){
+			return "add-$one";
+		});
+
+		$this->router->delete('remove/:any', function($one){
+			return "remove-$one";
+		});
+
+		$this->router->all('all/:any', function($one){
+			return "all-$one";
+		});
+
 	} // end func: setUp
 
 
@@ -135,6 +155,23 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 			array('reg/12c/that', 'GET', false),
 
 			array('catch/one/two/three', 'GET', 'catch-one/two/three'),
+
+			array('/', 'POST', false),
+			array('submit/one', 'POST', 'post-one'),
+
+			array('contact/one', 'GET', 'contact-one'),
+			array('contact/one', 'POST', 'contact-one'),
+			array('contact/one', 'PUT', false),
+
+			array('add/one', 'PUT', 'add-one'),
+			array('add/one', 'GET', false),
+			array('remove/one', 'DELETE', 'remove-one'),
+			array('remove/one', 'GET', false),
+
+			array('all/one', 'GET', 'all-one'),
+			array('all/one', 'POST', 'all-one'),
+			array('all/one', 'PUT', 'all-one'),
+			array('all/one', 'DELETE', 'all-one'),
 
 		);
 

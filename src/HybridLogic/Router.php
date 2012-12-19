@@ -14,7 +14,7 @@ class Router {
 	/**
 	 * @var array Allowed HTTP request methods
 	 **/
-	private $methods = array('GET', 'POST', 'PUT', 'DELETE');
+	private static $methods = array('GET', 'POST', 'PUT', 'DELETE');
 
 
 	/**
@@ -110,6 +110,36 @@ class Router {
 
 
 	/**
+	 * Add a route to GET and POST methods
+	 *
+	 * @param string Route pattern
+	 * @param array Options
+	 * @param callable Callback
+	 * @return void
+	 * @author Luke Lanchester
+	 **/
+	public function any($pattern, $options, $callback = null) {
+		return static::on(array('GET', 'POST'), $pattern, $options, $callback);
+	} // end func: any
+
+
+
+	/**
+	 * Add a route to all request methods
+	 *
+	 * @param string Route pattern
+	 * @param array Options
+	 * @param callable Callback
+	 * @return void
+	 * @author Luke Lanchester
+	 **/
+	public function all($pattern, $options, $callback = null) {
+		return static::on(static::$methods, $pattern, $options, $callback);
+	} // end func: all
+
+
+
+	/**
 	 * Add a route
 	 *
 	 * @param array HTTP Methods
@@ -134,7 +164,7 @@ class Router {
 		$route = is_array($options) ? array_merge($route, $options) : $route;
 
 		foreach($methods as $method) {
-			if(!in_array($method, $this->methods)) continue;
+			if(!in_array($method, static::$methods)) continue;
 			$this->routes[$method][] = $route;
 		}
 
@@ -296,7 +326,7 @@ class Router {
 		}
 
 		$method = strtoupper($method);
-		if(!in_array($method, $this->methods)) $method = 'GET';
+		if(!in_array($method, static::$methods)) $method = 'GET';
 
 		if(
 			$this->options['support_post_method']
@@ -304,7 +334,7 @@ class Router {
 			and isset($_POST['method'])
 		) {
 			$method = strtoupper($_POST['method']);
-			if(!in_array($method, $this->methods)) $method = 'POST';
+			if(!in_array($method, static::$methods)) $method = 'POST';
 		}
 
 		return $method;
